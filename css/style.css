@@ -9,10 +9,11 @@ body {
     margin: 0;
     padding: 0;
     overflow-x: hidden;
-    /* display: flex; */
+     display: flex;
+     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* Viewport height */
+    
 }
 
 .task {
@@ -130,6 +131,17 @@ button[type="submit"]:hover {
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
+    height: 50%;
+}
+.modal-content input[type="text"],
+.modal-content textarea {
+    font-size: 16px;
+    padding: 10px; 
+    width: 80%; 
+}
+
+.modal-content textarea {
+    height: 80px; 
 }
 
 .close {

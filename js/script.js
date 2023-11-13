@@ -65,8 +65,9 @@ function addTaskToList(taskValue, completed) {
     deleteButton.addEventListener('click', function() {
         taskList.removeChild(taskItem);
         saveTasksToLocalStorage();
-    });
+        console.log("delete item", taskItem)
 
+    });
     var editButton = document.createElement('button');
     editButton.textContent = 'Edit';
     editButton.className = 'edit';
@@ -142,7 +143,7 @@ window.onclick = function(event) {
         modal.style.display = "none";
     }
 };
-
+// recuperation des elements du modal
 var editCompletedCheckbox = document.getElementById("editTaskCompleted"); 
 
 // sauvagarde des modifications
