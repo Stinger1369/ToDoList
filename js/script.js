@@ -7,14 +7,19 @@ submit.addEventListener('click', function(){
     var taskItem = document.createElement('li');
     var taskItemText = document.createTextNode(taskValue);
     taskItem.appendChild(taskItemText);
-
+    console.log(taskItem);
     var deleteButton = document.createElement('button');
     deleteButton.textContent = 'Delete';
     deleteButton.className = 'delete';
     taskItem.appendChild(deleteButton);
 
     taskList.appendChild(taskItem);
-
+     var currentDate = new Date();
+     var dateString = currentDate.toLocaleDateString() + ' ' + currentDate.toLocaleTimeString();
+     var dateElement = document.createElement('span');
+     dateElement.textContent = dateString;
+     dateElement.className = 'task-date';
+     taskItem.appendChild(dateElement);
     task.value = '';
     task.focus();
 
@@ -22,3 +27,4 @@ submit.addEventListener('click', function(){
         taskList.removeChild(taskItem);
     });
 });
+
