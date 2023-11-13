@@ -40,16 +40,17 @@ function loadTasksFromLocalStorage() {
 }
 
 function fetchTasksFromAPI() {
-    fetch('https://dummyjson.com/todos?limit=30&skip=10')
+    fetch('https://dummyjson.com/todos?limit=3&skip=10')
         .then(res => res.json())
         .then(data => {
             data.todos.forEach(task => {
                 addTaskToList(task.todo);
             });
+            console.log('Loaded from API:', data);
         })
         .catch(err => console.error(err));
 }
-// console.log('Loaded from localStorage:', tasks);
+
 
 
 function addTaskToList(taskValue) {
@@ -78,7 +79,7 @@ function addTaskToList(taskValue) {
     editButton.addEventListener('click', function() {
         modal.style.display = "block";
         editTitle.value = taskInput.value;
-        editContent.value = ""; // Ajoutez le contenu de la tâche si disponible
+        editContent.value = ""; 
         currentEditTask = taskInput;
     });
 
@@ -106,7 +107,6 @@ window.onclick = function(event) {
 
 saveButton.onclick = function() {
     currentEditTask.value = editTitle.value;
-    // Mettez à jour le contenu de la tâche si nécessaire
     modal.style.display = "none";
     saveTasksToLocalStorage();
 };
