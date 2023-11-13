@@ -84,8 +84,30 @@ button[type="submit"]:hover {
 .taskList li .delete:hover {
     background-color: #c82333;
 }
+
+.task-input {
+    border: none;
+    background: transparent;
+    margin-right: 10px;
+    flex-grow: 1;
+}
+
+.task-input:focus {
+    outline: none;
+}
+
 .task-date {
     margin-left: 10px;
     font-size: 0.8em;
     color: #6c757d;
+}
+
+
+.taskList li .edit {
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
 }
