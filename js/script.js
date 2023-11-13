@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', loadTasksFromLocalStorage);
+//var tasks = JSON.parse(localStorage.getItem('tasks'));
 
 var taskList = document.querySelector('.taskList');
 var task = document.querySelector('#task');
