@@ -30,7 +30,7 @@ function saveTasksToLocalStorage() {
 
 function loadTasksFromLocalStorage() {
     var tasks = JSON.parse(localStorage.getItem('tasks'));
-    console.log('Loaded from localStorage:', tasks);
+    //console.log('Loaded from localStorage:', tasks);
 
     if (tasks) {
         tasks.forEach(function(taskText) {
