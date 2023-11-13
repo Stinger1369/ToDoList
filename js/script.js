@@ -1,5 +1,8 @@
-document.addEventListener('DOMContentLoaded', loadTasksFromLocalStorage);
-//var tasks = JSON.parse(localStorage.getItem('tasks'));
+
+document.addEventListener('DOMContentLoaded', function() {
+    loadTasksFromLocalStorage();
+    fetchTasksFromAPI();
+});
 
 var taskList = document.querySelector('.taskList');
 var task = document.querySelector('#task');
@@ -36,6 +39,19 @@ function loadTasksFromLocalStorage() {
     }
 }
 
+function fetchTasksFromAPI() {
+    fetch('https://dummyjson.com/todos?limit=30&skip=10')
+        .then(res => res.json())
+        .then(data => {
+            data.todos.forEach(task => {
+                addTaskToList(task.todo);
+            });
+        })
+        .catch(err => console.error(err));
+}
+// console.log('Loaded from localStorage:', tasks);
+
+
 function addTaskToList(taskValue) {
     var taskItem = document.createElement('li');
 
@@ -54,43 +70,43 @@ function addTaskToList(taskValue) {
         taskList.removeChild(taskItem);
         saveTasksToLocalStorage();
     });
-
     var editButton = document.createElement('button');
     editButton.textContent = 'Edit';
     editButton.className = 'edit';
     taskItem.appendChild(editButton);
+
     editButton.addEventListener('click', function() {
-        if (taskInput.readOnly) {
-            taskInput.readOnly = false;
-            taskInput.focus();
-        } else {
-            taskInput.readOnly = true;
-            dateElement.textContent = getCurrentDateString(); 
-            saveTasksToLocalStorage();
-        }
+        modal.style.display = "block";
+        editTitle.value = taskInput.value;
+        editContent.value = ""; // Ajoutez le contenu de la tâche si disponible
+        currentEditTask = taskInput;
     });
-
-    taskInput.addEventListener('blur', function() {
-        taskInput.readOnly = true;
-        dateElement.textContent = getCurrentDateString(); 
-        saveTasksToLocalStorage();
-    });
-
-    taskInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            taskInput.readOnly = true;
-            taskInput.blur(); 
-            dateElement.textContent = getCurrentDateString();
-            saveTasksToLocalStorage();
-        }
-    });
-
-    var dateElement = document.createElement('span');
-    dateElement.textContent = getCurrentDateString();
-    dateElement.className = 'task-date';
-    taskItem.appendChild(dateElement);
 
     taskList.appendChild(taskItem);
     task.value = '';
     task.focus();
 }
+
+var modal = document.getElementById("editModal");
+var span = document.getElementsByClassName("close")[0];
+var saveButton = document.getElementById("saveTaskChanges");
+var editTitle = document.getElementById("editTaskTitle");
+var editContent = document.getElementById("editTaskContent");
+var currentEditTask;
+
+span.onclick = function() {
+    modal.style.display = "none";
+};
+
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+};
+
+saveButton.onclick = function() {
+    currentEditTask.value = editTitle.value;
+    // Mettez à jour le contenu de la tâche si nécessaire
+    modal.style.display = "none";
+    saveTasksToLocalStorage();
+};
