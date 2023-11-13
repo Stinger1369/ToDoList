@@ -20,3 +20,11 @@ body{
     border-bottom: 1px solid #e9ecef;
 
 }
+.taskList{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    width: 100%;
+    border-radius: 2px;
+    box-shadow: 0 2px 4px rgba(0,0,0,.2);
+}
