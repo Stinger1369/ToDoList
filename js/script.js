@@ -34,7 +34,7 @@ function saveTasksToLocalStorage() {
         });
     });
     localStorage.setItem('tasks', JSON.stringify(tasks));
-    console.log('Saved to localStorage:', localStorage.getItem('tasks'));
+    //console.log('Saved to localStorage:', localStorage.getItem('tasks'));
 }
 
 function loadTasksFromLocalStorage() {
@@ -74,8 +74,8 @@ function addTaskToList(taskValue, completed) {
     editButton.addEventListener('click', function() {
         modal.style.display = "block";
         editTitle.value = taskInput.value;
-        editContent.value = ""; 
-        currentEditTask = taskInput;
+        editCompletedCheckbox.checked = taskItem.classList.contains('completed'); 
+        currentEditTask = taskItem; 
     });
 
     taskList.appendChild(taskItem);
@@ -142,38 +142,20 @@ window.onclick = function(event) {
         modal.style.display = "none";
     }
 };
+
+var editCompletedCheckbox = document.getElementById("editTaskCompleted"); 
+
 // sauvagarde des modifications
 saveButton.onclick = function() {
-    currentEditTask.value = editTitle.value;
+    currentEditTask.querySelector('.task-input').value = editTitle.value;
+    if (editCompletedCheckbox.checked) {
+        currentEditTask.classList.add('completed');
+    } else {
+        currentEditTask.classList.remove('completed');
+    }
     modal.style.display = "none";
     saveTasksToLocalStorage();
+
+    // Actualiser la page
+    location.reload();
 };
-
-
-
-
-
-// function countTasks() {
-//     fetch('https://dummyjson.com/todos?limit=300&skip=10')
-//         .then(response => response.json())
-//         .then(data => {
-//             let completedTasks = 0;
-//             let uncompletedTasks = 0;
-
-//             data.todos.forEach(task => {
-//                 if (task.completed) {
-//                     completedTasks++;
-//                 } else {
-//                     uncompletedTasks++;
-//                 }
-//             });
-
-//             console.log(`Total tasks: ${data.total}`);
-//             console.log(`Completed tasks: ${completedTasks}`);
-//             console.log(`Uncompleted tasks: ${uncompletedTasks}`);
-//         })
-//         .catch(error => console.error('Error:', error));
-// }
-
-// // Appeler la fonction
-// countTasks();
