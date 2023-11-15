@@ -39,7 +39,7 @@ function saveTasksToLocalStorage() {
     document.querySelectorAll('.taskList li').forEach(function(taskItem) {
         var userSelected = taskItem.querySelector('.user-select').value;
         tasks.push({ 
-            value: taskItem.querySelector('.task-input').value, // Assurez-vous de récupérer la bonne valeur
+            value: taskItem.querySelector('.task-input').value,
             completed: taskItem.classList.contains('completed'),
             assignedUser: userSelected
         });
@@ -119,11 +119,14 @@ function addTaskToList(taskValue, completed) {
         option.textContent = userName;
         userSelect.appendChild(option);
     });
+    
     taskItem.appendChild(userSelect);
+    
     userSelect.addEventListener('change', function(event) {
         var selectedUser = event.target.value;
         console.log("Tâche '" + taskValue + "' assignée à " + selectedUser);
-        saveTasksToLocalStorage(); // Enregistrer immédiatement la sélection dans le localStorage
+        console
+        saveTasksToLocalStorage();
     });
 }
 
