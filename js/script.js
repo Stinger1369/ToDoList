@@ -1,7 +1,7 @@
 const user =["Chouse Use","Bilel","Briac","Adrien"];
 function loadUsers() {
     user.forEach(userName => {
-        addTaskToList(userName, false); 
+        //addTaskToList(userName, false); 
     });
 }
 
@@ -19,7 +19,7 @@ var submit = document.querySelector('button[type="submit"]');
 
 submit.addEventListener('click', function() {
     var taskValue = task.value;
-    addTaskToList(taskValue, false); // false pour non complétée par défaut
+    //addTaskToList(taskValue, false); // false pour non complétée par défaut
     saveTasksToLocalStorage();
     filterTasks(); // Appliquer le filtrage après l'ajout
 });
@@ -49,12 +49,20 @@ function saveTasksToLocalStorage() {
 
 
 function loadTasksFromLocalStorage() {
+    // Vider la liste des tâches existantes
+    while (taskList.firstChild) {
+        taskList.removeChild(taskList.firstChild);
+    }
+
+    // Charger les tâches depuis le stockage local
     var tasks = JSON.parse(localStorage.getItem('tasks'));
     if (tasks) {
         tasks.forEach(function(taskObj) {
             addTaskToList(taskObj.value, taskObj.completed, taskObj.assignedUser);
         });
     }
+
+    // Appliquer les filtres si nécessaires
     filterTasks();
 }
 let taskIdCounter = 0;
@@ -103,25 +111,25 @@ function addTaskToList(taskValue, completed, assignedUser = null) {
     editButton.textContent = 'Edit';
     editButton.className = 'edit';
     taskItem.appendChild(editButton);
+
     editButton.addEventListener('click', function() {
         modal.style.display = "block";
         editTitle.value = taskInput.value;
         editCompletedCheckbox.checked = taskItem.classList.contains('completed'); 
         currentEditTask = taskItem; 
     });
-
     taskList.appendChild(taskItem);
-    task.value = '';
-    task.focus();
-    var userSelect = document.createElement('select');
-    userSelect.className = 'user-select';
-    user.forEach(userName => {
-        var option = document.createElement('option');
-        option.value = userName;
+
+    task.value = '';// Effacer la valeur de la zone de texte
+    task.focus();// Focus sur la zone de texte
+    var userSelect = document.createElement('select');// Créer un élément de sélection
+    userSelect.className = 'user-select';// Ajouter une classe
+    user.forEach(userName => {// Ajouter les options
+        var option = document.createElement('option');// Créer un élément d'option
+        option.value = userName;// Ajouter la valeur
         option.textContent = userName;
         userSelect.appendChild(option);
                
-
     });
     
     taskItem.appendChild(userSelect);
@@ -187,7 +195,7 @@ function filterTasks() {
     console.log("Tâches non définies:", undefinedCount);
 }
 function fetchTasksFromAPI() {
-    fetch('https://dummyjson.com/todos?limit=300&skip=0')
+    fetch('https://dummyjson.com/todos?limit=3&skip=10')
         .then(res => res.json())
         .then(data => {
             data.todos.forEach(task => {
@@ -197,6 +205,9 @@ function fetchTasksFromAPI() {
         })
         .catch(err => console.error(err));
 }
+
+
+
 
 var modal = document.getElementById("editModal");
 var span = document.getElementsByClassName("close")[0];
@@ -228,8 +239,8 @@ saveButton.onclick = function() {
     modal.style.display = "none";
     saveTasksToLocalStorage();
 
-    // Actualiser la page
-    location.reload();
+    // Mise à jour de la liste de tâches sans recharger la page
+    loadTasksFromLocalStorage();
 };
 
 
@@ -240,7 +251,7 @@ searchButton.addEventListener('click', function() {
 function filterTasksByTitle(searchText) {
     document.querySelectorAll('.taskList li').forEach(taskItem => {
         var taskTitle = taskItem.querySelector('.task-input').value.toLowerCase();
-
+         //console.log(taskTitle);
         if (taskTitle.includes(searchText)) {
             taskItem.style.display = '';
         } else {
