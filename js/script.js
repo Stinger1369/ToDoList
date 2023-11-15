@@ -37,27 +37,28 @@ function getCurrentDateString() {
 function saveTasksToLocalStorage() {
     var tasks = [];
     document.querySelectorAll('.taskList li').forEach(function(taskItem) {
-        var userSelected = taskItem.querySelector('.user-select').value;
+        var assignedUser = taskItem.getAttribute('data-assigned-user'); // Utilisez l'attribut pour obtenir l'utilisateur assigné
         tasks.push({ 
             value: taskItem.querySelector('.task-input').value,
             completed: taskItem.classList.contains('completed'),
-            assignedUser: userSelected
+            assignedUser: assignedUser
         });
     });
     localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
+
 function loadTasksFromLocalStorage() {
     var tasks = JSON.parse(localStorage.getItem('tasks'));
     if (tasks) {
         tasks.forEach(function(taskObj) {
-            addTaskToList(taskObj.value, taskObj.completed);
+            addTaskToList(taskObj.value, taskObj.completed, taskObj.assignedUser);
         });
     }
-    filterTasks(); // Appliquer le filtrage après le chargement
+    filterTasks();
 }
 let taskIdCounter = 0;
-function addTaskToList(taskValue, completed) {
+function addTaskToList(taskValue, completed, assignedUser = null) {
     var taskItem = document.createElement('li');
     taskItem.setAttribute('draggable', true);
     taskItem.className = completed ? 'completed' : 'uncompleted';
@@ -72,6 +73,7 @@ function addTaskToList(taskValue, completed) {
     taskList.addEventListener('dragstart', function(event) {
         event.dataTransfer.setData('text/plain', event.target.id);
     });
+    
 
     taskList.addEventListener('dragover', function(event) {
         event.preventDefault();
@@ -118,16 +120,39 @@ function addTaskToList(taskValue, completed) {
         option.value = userName;
         option.textContent = userName;
         userSelect.appendChild(option);
+               
+
     });
     
     taskItem.appendChild(userSelect);
-    
+  
+    var okButton = document.createElement('button');
+    okButton.textContent = 'OK';
+    okButton.className = 'ok-button';
+
+    // Ajout du bouton OK à l'élément de tâche
+    taskItem.appendChild(okButton);
     userSelect.addEventListener('change', function(event) {
         var selectedUser = event.target.value;
-        console.log("Tâche '" + taskValue + "' assignée à " + selectedUser);
-        console
-        saveTasksToLocalStorage();
+        taskItem.setAttribute('data-assigned-user', selectedUser); 
+        console.log("Utilisateur sélectionné pour la tâche '" + taskValue + "': " + selectedUser); // Affichez l'utilisateur actuellement sélectionné
+
     });
+
+    okButton.addEventListener('click', function() {
+        var assignedUser = taskItem.getAttribute('data-assigned-user');
+        console.log("Tâche '" + taskValue + "' validée et assignée à " + assignedUser); // Affichez le message lors du clic sur OK
+
+
+        saveTasksToLocalStorage(); 
+    });
+
+    // Restaurez l'utilisateur assigné si disponible
+    if (assignedUser) {
+        userSelect.value = assignedUser;
+        taskItem.setAttribute('data-assigned-user', assignedUser);
+
+    }
 }
 
 function filterTasks() {
