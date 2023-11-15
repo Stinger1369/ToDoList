@@ -46,17 +46,36 @@ function loadTasksFromLocalStorage() {
     }
     filterTasks(); // Appliquer le filtrage après le chargement
 }
-
+let taskIdCounter = 0;
 function addTaskToList(taskValue, completed) {
     var taskItem = document.createElement('li');
+    taskItem.setAttribute('draggable', true);
     taskItem.className = completed ? 'completed' : 'uncompleted';
-
+    taskItem.id = 'task-' + taskIdCounter++;
+    taskItem.setAttribute('draggable', true);
     var taskInput = document.createElement('input');
     taskInput.type = 'text';
     taskInput.value = taskValue;
     taskInput.readOnly = true;
     taskInput.className = 'task-input';
     taskItem.appendChild(taskInput);
+    taskList.addEventListener('dragstart', function(event) {
+        event.dataTransfer.setData('text/plain', event.target.id);
+    });
+
+    taskList.addEventListener('dragover', function(event) {
+        event.preventDefault();
+    });
+    
+    taskList.addEventListener('drop', function(event) {
+        event.preventDefault();
+        const id = event.dataTransfer.getData('text/plain');
+        const draggableElement = document.getElementById(id);
+        const dropzone = event.target.closest('.taskList li'); // S'assurer que la zone de dépôt est un élément de tâche
+        if (dropzone) {
+            taskList.insertBefore(draggableElement, dropzone.nextSibling); // Insère avant l'élément suivant
+        }
+    });
 
     var deleteButton = document.createElement('button');
     deleteButton.textContent = 'Delete';
