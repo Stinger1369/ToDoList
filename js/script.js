@@ -37,13 +37,14 @@ function getCurrentDateString() {
 function saveTasksToLocalStorage() {
     var tasks = [];
     document.querySelectorAll('.taskList li').forEach(function(taskItem) {
+        var userSelected = taskItem.querySelector('.user-select').value;
         tasks.push({ 
-            value: taskItem.firstChild.value, 
-            completed: taskItem.classList.contains('completed')
+            value: taskItem.querySelector('.task-input').value, // Assurez-vous de récupérer la bonne valeur
+            completed: taskItem.classList.contains('completed'),
+            assignedUser: userSelected
         });
     });
     localStorage.setItem('tasks', JSON.stringify(tasks));
-    //console.log('Saved to localStorage:', localStorage.getItem('tasks'));
 }
 
 function loadTasksFromLocalStorage() {
@@ -119,6 +120,11 @@ function addTaskToList(taskValue, completed) {
         userSelect.appendChild(option);
     });
     taskItem.appendChild(userSelect);
+    userSelect.addEventListener('change', function(event) {
+        var selectedUser = event.target.value;
+        console.log("Tâche '" + taskValue + "' assignée à " + selectedUser);
+        saveTasksToLocalStorage(); // Enregistrer immédiatement la sélection dans le localStorage
+    });
 }
 
 function filterTasks() {
