@@ -1,5 +1,14 @@
+const user =["Chouse Use","Bilel","Briac","Adrien"];
+function loadUsers() {
+    user.forEach(userName => {
+        addTaskToList(userName, false); 
+    });
+}
+
+
 document.addEventListener('DOMContentLoaded', function() {
     loadTasksFromLocalStorage();
+    loadUsers(); 
     fetchTasksFromAPI();
     attachFilterEventHandlers();
 });
@@ -101,6 +110,15 @@ function addTaskToList(taskValue, completed) {
     taskList.appendChild(taskItem);
     task.value = '';
     task.focus();
+    var userSelect = document.createElement('select');
+    userSelect.className = 'user-select';
+    user.forEach(userName => {
+        var option = document.createElement('option');
+        option.value = userName;
+        option.textContent = userName;
+        userSelect.appendChild(option);
+    });
+    taskItem.appendChild(userSelect);
 }
 
 function filterTasks() {
@@ -196,5 +214,6 @@ function filterTasksByTitle(searchText) {
         }
     });
 }
+
 
 

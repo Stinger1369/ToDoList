@@ -179,3 +179,11 @@ button[type="submit"]:hover {
     text-decoration: none;
     cursor: pointer;
 }
+
+
+.user-select{
+    margin-left: 10px;
+    font-size: 0.8em;
+    color: #6c757d;
+    
+}
