@@ -25,6 +25,10 @@ body {
     max-width: 500px;
 }
 
+#search {
+    width: fit-content;
+}
+
 h1 {
     text-align: center;
     color: #007bff;
