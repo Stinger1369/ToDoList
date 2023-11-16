@@ -12,6 +12,32 @@ document.addEventListener('DOMContentLoaded', function() {
     fetchTasksFromAPI();
     attachFilterEventHandlers();
 });
+function fetchTasksFromAPI() {
+    // Charger d'abord les tâches depuis le local storage
+    var localTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+    fetch('https://dummyjson.com/todos?limit=3&skip=10')
+        .then(res => res.json())
+        .then(data => {
+            data.todos.forEach(apiTask => {
+                // Construire l'ID de tâche basé sur l'ID de l'API
+                var taskId = 'task-' + apiTask.id;
+
+                // Vérifier si la tâche est déjà présente dans le local storage
+                var taskExists = localTasks.some(localTask => localTask.id === taskId);
+
+                if (!taskExists) {
+                    // Ajouter la tâche si elle n'existe pas déjà
+                    addTaskToList(apiTask.todo, apiTask.completed, null, taskId);
+                }
+            });
+            console.log('Loaded from API:', data);
+        })
+        .catch(err => console.error(err));
+}
+
+
+
 
 var taskList = document.querySelector('.taskList');
 var task = document.querySelector('#task');
@@ -19,7 +45,7 @@ var submit = document.querySelector('button[type="submit"]');
 
 submit.addEventListener('click', function() {
     var taskValue = task.value;
-    //addTaskToList(taskValue, false); // false pour non complétée par défaut
+    addTaskToList(taskValue, false); // false pour non complétée par défaut
     saveTasksToLocalStorage();
     filterTasks(); // Appliquer le filtrage après l'ajout
 });
@@ -37,8 +63,9 @@ function getCurrentDateString() {
 function saveTasksToLocalStorage() {
     var tasks = [];
     document.querySelectorAll('.taskList li').forEach(function(taskItem) {
-        var assignedUser = taskItem.getAttribute('data-assigned-user'); // Utilisez l'attribut pour obtenir l'utilisateur assigné
+        var assignedUser = taskItem.getAttribute('data-assigned-user');
         tasks.push({ 
+            id: taskItem.id, // Enregistrement de l'ID de la tâche
             value: taskItem.querySelector('.task-input').value,
             completed: taskItem.classList.contains('completed'),
             assignedUser: assignedUser
@@ -47,30 +74,29 @@ function saveTasksToLocalStorage() {
     localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
-
 function loadTasksFromLocalStorage() {
-    // Vider la liste des tâches existantes
     while (taskList.firstChild) {
         taskList.removeChild(taskList.firstChild);
     }
 
-    // Charger les tâches depuis le stockage local
     var tasks = JSON.parse(localStorage.getItem('tasks'));
     if (tasks) {
         tasks.forEach(function(taskObj) {
-            addTaskToList(taskObj.value, taskObj.completed, taskObj.assignedUser);
+            addTaskToList(taskObj.value, taskObj.completed, taskObj.assignedUser, taskObj.id);
         });
     }
-
-    // Appliquer les filtres si nécessaires
-    filterTasks();
 }
-let taskIdCounter = 0;
-function addTaskToList(taskValue, completed, assignedUser = null) {
+function getUniqueTaskId() {
+    return 'task-' + new Date().getTime();
+}
+function addTaskToList(taskValue, completed, assignedUser = null, taskId = null) {
+    if (!taskId) {
+        taskId = getUniqueTaskId(); // Générer un nouvel ID uniquement si nécessaire
+    }
     var taskItem = document.createElement('li');
     taskItem.setAttribute('draggable', true);
     taskItem.className = completed ? 'completed' : 'uncompleted';
-    taskItem.id = 'task-' + taskIdCounter++;
+    taskItem.id = taskId;
     taskItem.setAttribute('draggable', true);
     var taskInput = document.createElement('input');
     taskInput.type = 'text';
@@ -80,13 +106,16 @@ function addTaskToList(taskValue, completed, assignedUser = null) {
     taskItem.appendChild(taskInput);
     taskList.addEventListener('dragstart', function(event) {
         event.dataTransfer.setData('text/plain', event.target.id);
+        saveTasksToLocalStorage();
+
     });
     
 
     taskList.addEventListener('dragover', function(event) {
         event.preventDefault();
+        saveTasksToLocalStorage();
+
     });
-    
     taskList.addEventListener('drop', function(event) {
         event.preventDefault();
         const id = event.dataTransfer.getData('text/plain');
@@ -94,7 +123,10 @@ function addTaskToList(taskValue, completed, assignedUser = null) {
         const dropzone = event.target.closest('.taskList li'); // S'assurer que la zone de dépôt est un élément de tâche
         if (dropzone) {
             taskList.insertBefore(draggableElement, dropzone.nextSibling); // Insère avant l'élément suivant
+            saveTasksToLocalStorage();
+
         }
+
     });
 
     var deleteButton = document.createElement('button');
@@ -194,17 +226,6 @@ function filterTasks() {
     console.log("Tâches non complétées:", uncompletedCount);
     console.log("Tâches non définies:", undefinedCount);
 }
-function fetchTasksFromAPI() {
-    fetch('https://dummyjson.com/todos?limit=3&skip=10')
-        .then(res => res.json())
-        .then(data => {
-            data.todos.forEach(task => {
-                addTaskToList(task.todo, task.completed);
-            });
-            console.log('Loaded from API:', data);
-        })
-        .catch(err => console.error(err));
-}
 
 
 
@@ -240,7 +261,7 @@ saveButton.onclick = function() {
     saveTasksToLocalStorage();
 
     // Mise à jour de la liste de tâches sans recharger la page
-    loadTasksFromLocalStorage();
+    //loadTasksFromLocalStorage();
 };
 
 
