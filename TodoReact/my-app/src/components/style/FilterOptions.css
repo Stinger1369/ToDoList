@@ -1,0 +1,16 @@
+/* FilterOptions.css */
+.filterOptions {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+  }
+  
+  .filterOptions label {
+    margin: 0 10px;
+    font-size: 16px;
+  }
+  
+  .filterOptions input[type="checkbox"] {
+    margin-left: 5px;
+  }
+  
