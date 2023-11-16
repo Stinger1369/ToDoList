@@ -9,9 +9,12 @@ function loadUsers() {
 document.addEventListener('DOMContentLoaded', function() {
     loadTasksFromLocalStorage();
     loadUsers(); 
-    fetchTasksFromAPI();
+    if (!localStorage.getItem('tasks') || JSON.parse(localStorage.getItem('tasks')).length === 0) {
+        fetchTasksFromAPI();
+    }
     attachFilterEventHandlers();
 });
+
 function fetchTasksFromAPI() {
     // Charger d'abord les tâches depuis le local storage
     var localTasks = JSON.parse(localStorage.getItem('tasks')) || [];
@@ -137,6 +140,9 @@ function addTaskToList(taskValue, completed, assignedUser = null, taskId = null)
         taskList.removeChild(taskItem);
         saveTasksToLocalStorage();
         console.log("delete item", taskItem)
+        console.log("LocalStorage", localStorage['tasks'].length)
+        console.log("LocalStorage", localStorage['tasks']) 
+
 
     });
     var editButton = document.createElement('button');
