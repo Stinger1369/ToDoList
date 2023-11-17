@@ -1,4 +1,4 @@
-const user =["Chouse Use","Bilel","Briac","Adrien"];
+const user =["Select an user","Bilel","Briac","Adrien"];
 function loadUsers() {
     user.forEach(userName => {
         //addTaskToList(userName, false); 
