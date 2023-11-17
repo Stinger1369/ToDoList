@@ -266,8 +266,7 @@ saveButton.onclick = function() {
     modal.style.display = "none";
     saveTasksToLocalStorage();
 
-    // Mise à jour de la liste de tâches sans recharger la page
-    //loadTasksFromLocalStorage();
+   
 };
 
 
