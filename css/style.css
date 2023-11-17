@@ -187,3 +187,22 @@ button[type="submit"]:hover {
     color: #6c757d;
     
 }
+
+.barNav {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.barNav a{
+    margin-left: 10px;
+    margin-right: 10px;
+    text-decoration: none ;
+    background-color: bisque;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 10px;
+}

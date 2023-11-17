@@ -5,7 +5,7 @@ function loadUsers() {
     });
 }
 
-
+//  Attendre que le DOM soit entièrement chargé avant d'exécuter le code
 document.addEventListener('DOMContentLoaded', function() { // Ajouter un gestionnaire d'événements pour le chargement du DOM 
     loadTasksFromLocalStorage(); // Charger les tâches depuis le local storage 
     loadUsers(); // Charger les utilisateurs depuis le local storage
@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function() { // Ajouter un gestion
 });
 
 // Récupérer les tâches depuis l'API
+// ici on a encapsulé le code de la fonction fetchTasksFromAPI() dans une fonction pour la rendre réutilisable est surtut pour la structurer, controle de l'exécution 
 function fetchTasksFromAPI() { // Fonction de récupération des tâches depuis l'API
     // Charger d'abord les tâches depuis le local storage
     var localTasks = JSON.parse(localStorage.getItem('tasks')) || [];// Charger les tâches depuis le local storage
@@ -64,6 +65,9 @@ function getCurrentDateString() { // Fonction pour obtenir la date actuelle
     return currentDate.toLocaleDateString() + ' ' + currentDate.toLocaleTimeString(); // Retourner la date et l'heure actuelles
 }
 
+
+
+// Pour apprendre plus sur le local Storage et des autres encore voici :https://grafikart.fr/tutoriels/javascript-local-storage-2077
 function saveTasksToLocalStorage() { // Fonction pour sauvegarder les tâches dans le local storage
     var tasks = [];
     document.querySelectorAll('.taskList li').forEach(function(taskItem) { // Parcourir les éléments de tâche
@@ -90,6 +94,8 @@ function loadTasksFromLocalStorage() { // Fonction pour charger les tâches depu
         });
     }
 }
+
+
 function getUniqueTaskId() { // Fonction pour générer un ID unique (Idée du Adrian)
     return 'task-' + new Date().getTime(); // Générer un ID unique basé sur la date actuelle
 }
