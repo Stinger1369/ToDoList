@@ -1,11 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import * as yup from 'yup';
 
+
+
+const contactSchema = yup.object().shape({
+  name: yup.string().required('Le nom est requis'),
+  email: yup.string().email('L\'email doit être valide').required('L\'email est requis'),
+  subject: yup.string().required('Le sujet est requis'),
+  message: yup.string().required('Le message est requis'),
+});
 const EditTaskModal = ({ task, onSave, onClose }) => {
   const [editedTask, setEditedTask] = useState(task || { value: '', completed: false });
   const [contact, setContact] = useState({ name: '', email: '', subject: '', message: '' });
   const [openSnackbar, setOpenSnackbar] = useState(false);
+
+  const [validationErrors, setValidationErrors] = useState({});
 
 
   useEffect(() => {
@@ -29,7 +40,7 @@ const EditTaskModal = ({ task, onSave, onClose }) => {
     
     setTimeout(() => {
       onClose(); 
-    }, 5000);
+    }, 500);
   };
   
   const handleCloseSnackbar = (event, reason) => {
@@ -80,7 +91,7 @@ const EditTaskModal = ({ task, onSave, onClose }) => {
           placeholder="Message"
         />
         <button className='send' onClick={handleContactSubmit}>Envoyer</button>
-        <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+        <Snackbar open={openSnackbar} autoHideDuration={600} onClose={handleCloseSnackbar}>
           <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
             Message envoyé avec succès !
           </Alert>

@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  position: relative;
 }
 
 .App-logo {
@@ -51,3 +52,10 @@ h1 {
   color: blue;
 }
 
+.HOCButon{
+  position: absolute;
+  
+  right: 10px;
+  z-index: 1000;
+  
+}
