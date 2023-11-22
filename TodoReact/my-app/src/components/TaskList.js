@@ -43,19 +43,22 @@ const TaskList = () => {
   }, []);
  
   const fetchTasksFromAPI = () => {
-    fetch('https://dummyjson.com/todos?limit=30&skip=10')
+    fetch('https://dummyjson.com/todos?limit=10&skip=10')
       .then(res => res.json())
       .then(data => {
+        console.log("Données récupérées de l'API :", data.todos);
         const apiTasks = data.todos.map(apiTask => ({
           id: 'task-' + apiTask.id,
           value: apiTask.todo,
-          completed: apiTask.completed
+          completed: apiTask.completed,
+          // Ajoutez ici les champs de date si disponibles dans l'API
         }));
         setTasks(apiTasks);
         saveTasksToLocalStorage(apiTasks);
       })
       .catch(err => console.error(err));
   };
+  console.log(tasks);
 
   const saveTasksToLocalStorage = (tasks) => {
     localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -85,10 +88,13 @@ const TaskList = () => {
 
   const handleAddTask = (taskValue) => {
     const newTask = {
-      id: 'task-' + new Date().getTime(), // Générer un ID unique
+      id: 'task-' + new Date().getTime(),
       value: taskValue,
-      completed: false
+      completed: false,
+      createdAt: new Date().toISOString(), 
+      lastModified: new Date().toISOString() 
     };
+  
 
     const updatedTasks = [...tasks, newTask];
     setTasks(updatedTasks);
@@ -103,7 +109,7 @@ const TaskList = () => {
   };
   const handleSaveTask = (editedTask) => {
     const updatedTasks = tasks.map(task => 
-      task.id === editedTask.id ? editedTask : task
+      task.id === editedTask.id ? { ...editedTask, lastModified: new Date().toISOString() } : task
     );
     setTasks(updatedTasks);
     setEditingTask(null); // Fermer le modal après la sauvegarde
