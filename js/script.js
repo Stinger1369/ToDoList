@@ -21,7 +21,7 @@ function fetchTasksFromAPI() { // Fonction de récupération des tâches depuis 
     // Charger d'abord les tâches depuis le local storage
     var localTasks = JSON.parse(localStorage.getItem('tasks')) || [];// Charger les tâches depuis le local storage
 
-    fetch('https://dummyjson.com/todos?limit=3&skip=10') // Récupérer les tâches depuis l'API
+    fetch('https://dummyjson.com/todos?limit=30&skip=10') // Récupérer les tâches depuis l'API
         .then(res => res.json()) // Convertir la réponse en JSON
         .then(data => {
             data.todos.forEach(apiTask => { // Parcourir les tâches de l'API
@@ -296,3 +296,4 @@ function filterTasksByTitle(searchText) { // Fonction pour filtrer les tâches p
 
 
 
+// le code dans une presetation  n'est pas trpo conseiller

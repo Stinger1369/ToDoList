@@ -5,6 +5,11 @@ import AddTaskForm from './AddTaskForm';
 import EditTaskModal from './EditTaskModal';
 import SearchBar from './SearchBar';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
+import { FaMoon, FaSun } from 'react-icons/fa';
+
+
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
@@ -13,8 +18,20 @@ const TaskList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [showCompleted, setShowCompleted] = useState(true);
   const [showUncompleted, setShowUncompleted] = useState(true);
+  
 
+  const [theme, setTheme] = useState('light');
+  useEffect(() => {
+    document.body.className = theme;
+  }, [theme]);
 
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    console.log(`Changement du thème en : ${newTheme}`); 
+    setTheme(newTheme);
+  };
+
+  
   useEffect(() => {
     const storedTasks = localStorage.getItem('tasks');
     if (storedTasks) {
@@ -50,7 +67,7 @@ const TaskList = () => {
  const handleFilterChange = (filterOption) => {
     setFilter(filterOption);
   };
-console.log(tasks);
+// console.log(tasks);
   const getFilteredTasks = () => {
     return tasks
       .filter(task => {
@@ -107,6 +124,12 @@ console.log(tasks);
   };
   return (
     <div>
+     <button className='BasicButton' onClick={toggleTheme}>
+      {theme === 'light' ? <FaMoon /> : <FaSun />}
+     </button>
+     {/* <button onClick={toggleTheme}>
+      {theme === 'light' ? <FontAwesomeIcon icon={faMoon} /> : <FontAwesomeIcon icon={faSun} />}
+     </button> */}
       <SearchBar onSearch={handleSearchTermChange} />
       <AddTaskForm onAddTask={handleAddTask} />
       <FilterOptions 
