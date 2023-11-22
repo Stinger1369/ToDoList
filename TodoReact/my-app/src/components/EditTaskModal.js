@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 const EditTaskModal = ({ task, onSave, onClose }) => {
   const [editedTask, setEditedTask] = useState(task || { value: '', completed: false });
   const [contact, setContact] = useState({ name: '', email: '', subject: '', message: '' });
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
 
   useEffect(() => {
@@ -21,10 +24,22 @@ const EditTaskModal = ({ task, onSave, onClose }) => {
   };
 
   const handleContactSubmit = () => {
-    // Traiter les données de contact ici
-    console.log(contact);
-    onClose(); // Fermer le modal après l'envoi
+    console.log("Envoi du formulaire de contact");
+    setOpenSnackbar(true);
+    
+    setTimeout(() => {
+      onClose(); 
+    }, 5000);
   };
+  
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenSnackbar(false);
+  };
+  console.log("Snackbar ouvert :", openSnackbar);
+
   return (
     <div className="modal">
       <input 
@@ -65,6 +80,11 @@ const EditTaskModal = ({ task, onSave, onClose }) => {
           placeholder="Message"
         />
         <button className='send' onClick={handleContactSubmit}>Envoyer</button>
+        <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+          <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
+            Message envoyé avec succès !
+          </Alert>
+        </Snackbar>
       </div>
 
     </div>
