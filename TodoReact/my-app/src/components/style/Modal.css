@@ -1,0 +1,72 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  position: relative;
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+ 
+
+}
+.contact-form {
+    margin-top: 20px;
+    padding: 15px;
+    
+    border-radius: 5px;
+  }
+  
+  .contact-form input[type="text"],
+  .contact-form input[type="email"],
+  .contact-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .contact-form textarea {
+    height: 100px;
+    resize: vertical; 
+  }
+  
+  .contact-form button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .contact-form button:hover {
+    background-color: #45a049;
+  }
+  .contat-Waiting{
+    display: flex;
+  position: absolute;
+  top: 10px;          
+  right: 10px;        
+  background-color: transparent; 
+  color: inherit;     
+  cursor: pointer; 
+  }
+  .modal-content .Fermer{
+    background-color: #f44336;
+    color: white;
+    padding: 10px 20px;
+    
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }

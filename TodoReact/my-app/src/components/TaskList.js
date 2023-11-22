@@ -4,9 +4,10 @@ import FilterOptions from './FilterOptions';
 import AddTaskForm from './AddTaskForm';
 import EditTaskModal from './EditTaskModal';
 import SearchBar from './SearchBar';
+import Modal from './Modal';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
+//import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+//import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 import { FaMoon, FaSun } from 'react-icons/fa';
 
 
@@ -150,12 +151,14 @@ const TaskList = () => {
       </ul>
 
       {editingTask && (
+      <Modal isOpen={editingTask !== null} onClose={handleCloseModal}>
         <EditTaskModal 
           task={editingTask} 
           onSave={handleSaveTask} 
           onClose={handleCloseModal} 
         />
-      )}
+      </Modal>
+    )}
     </div>
   );
 };

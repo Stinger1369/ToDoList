@@ -51,10 +51,3 @@ h1 {
   color: blue;
 }
 
-.HOCButon {
-  position: fixed; 
-    margin-right: 400px;
-    top: 35px;       
-    right: 10px;     
-    z-index: 1000;
-}
