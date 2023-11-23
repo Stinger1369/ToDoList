@@ -37,8 +37,14 @@ const ReducerModal = ({ isOpen, onClose }) => {
         }
     };
 
-    if (!isOpen) return null;
+    
+    const handleSubmit = (e) => {
+        e.preventDefault();  
+        handleAddNumber();
+    };
 
+    
+    if (!isOpen) return null;
     return (
         <div className="modal-overlay">
             <div className="modal-content">
@@ -54,13 +60,15 @@ const ReducerModal = ({ isOpen, onClose }) => {
                         </li>
                     ))}
                 </ul>
-                <input
-                    type="number"
-                    value={newNumber}
-                    onChange={e => setNewNumber(e.target.value)}
-                    placeholder="Ajouter un nombre"
-                />
-                <button onClick={handleAddNumber}>Ajouter</button>
+                <form onSubmit={handleSubmit}>
+                    <input
+                        type="number"
+                        value={newNumber}
+                        onChange={e => setNewNumber(e.target.value)}
+                        placeholder="Ajouter un nombre"
+                    />
+                    <button type="submit">Ajouter</button>
+                </form>
                 <button onClick={() => dispatch({ type: 'CALCULATE_SUM' })}>
                     Calculer la somme
                 </button>
